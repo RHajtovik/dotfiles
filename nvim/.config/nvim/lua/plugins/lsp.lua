@@ -1,6 +1,6 @@
 ---@diagnostic disable: undefined-global
 return {
-  { "b0o/schemastore.nvim", lazy = false },
+  { "b0o/schemastore.nvim" },
 
   {
     "neovim/nvim-lspconfig",
@@ -15,11 +15,7 @@ return {
         settings = {
           python = {
             analysis = {
-              extraPaths = { vim.fn.getcwd() },
-
-              venvPath = ".",
-              venv = ".venv",
-              typeCheckingMode = "standard", -- or "strict"
+              typeCheckingMode = "standard",
               autoSearchPaths = true,
               useLibraryCodeForTypes = true,
               diagnosticMode = "workspace",
@@ -28,19 +24,15 @@ return {
         },
       }
 
+      -- Keep these only if every project uses .venv at repo root
+      opts.servers.pyright.settings.python.venvPath = "."
+      opts.servers.pyright.settings.python.venv = ".venv"
+
       -- TS / JS
       opts.servers.ts_ls = opts.servers.ts_ls or {}
-      opts.servers.ts_ls.filetypes = {
-        "javascript",
-        "javascriptreact",
-        "typescript",
-        "typescriptreact",
-      }
 
       -- ESLint
       opts.servers.eslint = opts.servers.eslint or {}
-      opts.servers.eslint.settings =
-        vim.tbl_deep_extend("force", opts.servers.eslint.settings or {}, { workingDirectory = { mode = "auto" } })
 
       opts.setup.eslint = function(_, server_opts)
         server_opts.filetypes = {
@@ -60,10 +52,8 @@ return {
       opts.setup.jsonls = function(_, server_opts)
         server_opts.settings = server_opts.settings or {}
         server_opts.settings.json = server_opts.settings.json or {}
-
         server_opts.settings.json.schemas = require("schemastore").json.schemas()
         server_opts.settings.json.validate = { enable = true }
-
         return false
       end
     end,
