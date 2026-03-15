@@ -1,0 +1,7 @@
+[credential]
+	helper = store
+[user]
+	name = Ryan Hajtovik
+	email = ryan.hajtovik@quanxiom.ai
+[pull]
+	rebase = false
