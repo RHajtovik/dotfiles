@@ -9,7 +9,7 @@ if vim.g.neovide then
   vim.g.neovide_opacity = 0.7
   vim.g.neovide_window_blurred = true
 
-  vim.opt.guifont = "JetBrainsMono Nerd Font:h9.5"
+  vim.opt.guifont = "CaskaydiaCove Nerd Font:h9.5"
 
   -- Cursor
   vim.opt.guicursor = {
