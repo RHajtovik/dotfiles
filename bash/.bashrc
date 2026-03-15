@@ -122,3 +122,4 @@ export NVM_DIR="$HOME/.nvm"
 if [ -f ~/.bash_secrets ]; then
   source ~/.bash_secrets
 fi
+export PATH="$PATH:/opt/nvim/bin"

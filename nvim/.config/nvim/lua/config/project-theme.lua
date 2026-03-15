@@ -1,15 +1,24 @@
+local current_theme = nil
+
 local function set_project_theme()
   local cwd = vim.fn.getcwd()
+  local theme = "gruvbox-material"
 
-  -- Match by folder name or path
   if cwd:find("qnxm%-design%-system") then
-    vim.cmd.colorscheme("rose-pine")
+    theme = "rose-pine"
   elseif cwd:find("qmmand%-console%-start") then
-    vim.cmd.colorscheme("everforest")
+    theme = "everforest"
   elseif cwd:find("qmmander") then
-    vim.cmd.colorscheme("rose-pine")
-  else
-    vim.cmd.colorscheme("rose-pine")
+    theme = "gruvbox-material"
+  end
+
+  if theme ~= current_theme then
+    local ok, err = pcall(vim.cmd.colorscheme, theme)
+    if ok then
+      current_theme = theme
+    else
+      vim.notify("Failed to load colorscheme " .. theme .. ": " .. err, vim.log.levels.ERROR)
+    end
   end
 end
 
