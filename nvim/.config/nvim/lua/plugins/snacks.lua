@@ -1,6 +1,9 @@
 return {
   "folke/snacks.nvim",
   opts = {
+    picker = {
+      layout = "default",
+    },
     explorer = {
       show_hidden = false,
       hide_gitignored = false,
