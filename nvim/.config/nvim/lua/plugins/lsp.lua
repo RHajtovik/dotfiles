@@ -18,42 +18,53 @@ return {
         on_attach = on_attach,
         settings = {
           python = {
+            pythonPath = ".venv/bin/python",
             analysis = {
               typeCheckingMode = "standard",
               autoSearchPaths = true,
               useLibraryCodeForTypes = true,
               diagnosticMode = "openFilesOnly",
+              diagnosticSeverityOverrides = {
+                reportUnusedImport = "none",
+                reportUnusedVariable = "none",
+                reportUnusedClass = "none",
+                reportUnusedFunction = "none",
+                reportMissingImports = "none",
+              },
             },
           },
         },
       }
 
-      -- Keep these only if every project uses .venv at repo root
-      opts.servers.pyright.settings.python.venvPath = "."
-      opts.servers.pyright.settings.python.venv = ".venv"
+      opts.servers.vtsls = opts.servers.vtsls or {}
+      opts.servers.vtsls.on_attach = on_attach
+      opts.servers.vtsls.settings = vim.tbl_deep_extend("force", opts.servers.vtsls.settings or {}, {
+        javascript = {
+          inlayHints = {
+            enumMemberValues = { enabled = false },
+            functionLikeReturnTypes = { enabled = false },
+            parameterNames = { enabled = "none" },
+            parameterTypes = { enabled = false },
+            propertyDeclarationTypes = { enabled = false },
+            variableTypes = { enabled = false },
+          },
+        },
+        typescript = {
+          inlayHints = {
+            enumMemberValues = { enabled = false },
+            functionLikeReturnTypes = { enabled = false },
+            parameterNames = { enabled = "none" },
+            parameterTypes = { enabled = false },
+            propertyDeclarationTypes = { enabled = false },
+            variableTypes = { enabled = false },
+          },
+        },
+      })
 
-      -- TS / JS
-      opts.servers.ts_ls = {
+      -- Tailwind CSS
+      opts.servers.tailwindcss = {
         on_attach = on_attach,
       }
-
-      -- ESLint
-      opts.servers.eslint = {
-        on_attach = on_attach,
-      }
-
-      opts.setup.eslint = function(_, server_opts)
-        server_opts.filetypes = {
-          "javascript",
-          "javascriptreact",
-          "typescript",
-          "typescriptreact",
-          "vue",
-          "svelte",
-          "astro",
-        }
-        return false
-      end
 
       -- JSON
       opts.servers.jsonls = opts.servers.jsonls or {}
@@ -64,6 +75,45 @@ return {
         server_opts.settings.json.validate = { enable = true }
         return false
       end
+
+      -- YAML
+      opts.servers.yamlls = {
+        on_attach = on_attach,
+        settings = {
+          yaml = {
+            schemaStore = { enable = true },
+          },
+        },
+      }
+
+      -- Dockerfile
+      opts.servers.dockerls = {
+        on_attach = on_attach,
+      }
+
+      -- Docker Compose
+      opts.servers.docker_compose_language_service = {
+        on_attach = on_attach,
+      }
+
+      -- Lua
+      opts.servers.lua_ls = {
+        on_attach = on_attach,
+        settings = {
+          Lua = {
+            diagnostics = { globals = { "vim" } },
+            hint = { enable = false },
+            workspace = {
+              checkThirdParty = false,
+            },
+          },
+        },
+      }
+
+      -- TOML
+      opts.servers.taplo = {
+        on_attach = on_attach,
+      }
     end,
   },
 }
