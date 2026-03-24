@@ -4,25 +4,26 @@
 --
 --
 
-if vim.g.neovide then
-  -- Appearance
-  vim.g.neovide_opacity = 0.7
-  vim.g.neovide_window_blurred = true
+vim.opt.guicursor = {
+  "n:block", -- Normal: solid block
+  "v:hor20", -- Visual: underline cursor
+  "i:ver25", -- Insert: underline
+  "c:hor20", -- Command-line: underline
+  "r:hor20", -- Replace: underline
+  "o:hor20", -- Operator-pending: underline
+  "a:blinkon300-blinkoff300",
+}
 
-  vim.opt.guifont = "CaskaydiaCove Nerd Font:h9.5"
-
-  -- Cursor
-  vim.opt.guicursor = {
-    "n:block",
-    "i:hor20",
-    "v:hor20",
-    "c:hor20",
-    "r:hor20",
-    "o:hor20",
-    "a:blinkon400-blinkoff250",
-  }
-
-  -- Clipboard sanity
-  vim.opt.clipboard = "unnamedplus"
-  vim.opt.backspace = { "indent", "eol", "start" }
-end
+vim.opt.clipboard = "unnamedplus"
+vim.g.clipboard = {
+  name = "win32yank",
+  copy = {
+    ["+"] = "win32yank.exe -i --crlf",
+    ["*"] = "win32yank.exe -i --crlf",
+  },
+  paste = {
+    ["+"] = "win32yank.exe -o --lf",
+    ["*"] = "win32yank.exe -o --lf",
+  },
+  cache_enabled = 0,
+}

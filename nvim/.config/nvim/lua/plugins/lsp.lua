@@ -1,24 +1,28 @@
 ---@diagnostic disable: undefined-global
 return {
   { "b0o/schemastore.nvim" },
-
   {
     "neovim/nvim-lspconfig",
-    lazy = false,
+    event = { "BufReadPre", "BufNewFile" },
     dependencies = { "b0o/schemastore.nvim" },
     opts = function(_, opts)
       opts.servers = opts.servers or {}
       opts.setup = opts.setup or {}
 
+      local on_attach = function(_, bufnr)
+        vim.lsp.inlay_hint.enable(false, { bufnr = bufnr })
+      end
+
       -- Python
       opts.servers.pyright = {
+        on_attach = on_attach,
         settings = {
           python = {
             analysis = {
               typeCheckingMode = "standard",
               autoSearchPaths = true,
               useLibraryCodeForTypes = true,
-              diagnosticMode = "workspace",
+              diagnosticMode = "openFilesOnly",
             },
           },
         },
@@ -29,10 +33,14 @@ return {
       opts.servers.pyright.settings.python.venv = ".venv"
 
       -- TS / JS
-      opts.servers.ts_ls = opts.servers.ts_ls or {}
+      opts.servers.ts_ls = {
+        on_attach = on_attach,
+      }
 
       -- ESLint
-      opts.servers.eslint = opts.servers.eslint or {}
+      opts.servers.eslint = {
+        on_attach = on_attach,
+      }
 
       opts.setup.eslint = function(_, server_opts)
         server_opts.filetypes = {
