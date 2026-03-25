@@ -123,3 +123,11 @@ if [ -f ~/.bash_secrets ]; then
   source ~/.bash_secrets
 fi
 export PATH="$PATH:/opt/nvim/bin"
+
+# pnpm
+export PNPM_HOME="/home/rhajtovik/.local/share/pnpm"
+case ":$PATH:" in
+  *":$PNPM_HOME:"*) ;;
+  *) export PATH="$PNPM_HOME:$PATH" ;;
+esac
+# pnpm end
