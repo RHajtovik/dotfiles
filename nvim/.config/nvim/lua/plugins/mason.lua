@@ -7,6 +7,13 @@ return {
     end,
   },
   {
+    "mason-lspconfig.nvim",
+    opts = function(_, opts)
+      opts.handlers = opts.handlers or {}
+      opts.handlers.pyright = function() end -- do nothing
+    end,
+  },
+  {
     "WhoIsSethDaniel/mason-tool-installer.nvim",
     dependencies = { "mason-org/mason.nvim" },
     config = function()

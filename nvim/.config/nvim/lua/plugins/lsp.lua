@@ -4,8 +4,9 @@ return {
   {
     "neovim/nvim-lspconfig",
     event = { "BufReadPre", "BufNewFile" },
-    dependencies = { "b0o/schemastore.nvim" },
+    dependencies = { "b0o/schemastore.nvim", "mason-org/mason.nvim", "WhoIsSethDaniel/mason-tool-installer.nvim" },
     opts = function(_, opts)
+      print(vim.inspect(opts.servers.pyright))
       opts.servers = opts.servers or {}
       opts.setup = opts.setup or {}
 
@@ -14,11 +15,10 @@ return {
       end
 
       -- Python
-      opts.servers.pyright = {
+      opts.servers.pyright = vim.tbl_deep_extend("force", opts.servers.pyright or {}, {
         on_attach = on_attach,
         settings = {
           python = {
-            pythonPath = ".venv/bin/python",
             analysis = {
               typeCheckingMode = "standard",
               autoSearchPaths = true,
@@ -34,8 +34,16 @@ return {
             },
           },
         },
+      })
+      -- Python
+      opts.servers.ruff = {
+        on_attach = function(client, bufnr)
+          on_attach(client, bufnr)
+          client.server_capabilities.hoverProvider = false
+        end,
       }
 
+      -- Typscript & Javascript
       opts.servers.vtsls = opts.servers.vtsls or {}
       opts.servers.vtsls.on_attach = on_attach
       opts.servers.vtsls.settings = vim.tbl_deep_extend("force", opts.servers.vtsls.settings or {}, {
